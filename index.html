@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>NutureByte</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#111111">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="NutureByte">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       ONBOARDING  (first launch only)
+  ═══════════════════════════════════════════════ -->
+  <section id="onboarding">
+
+    <div class="ob-step active" id="ob-sex">
+      <div class="ob-progress"><span class="ob-dot active"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span></div>
+      <h1 class="ob-question">What is your biological sex?</h1>
+      <div class="ob-options">
+        <button class="ob-choice" data-ob-sex="male">Male</button>
+        <button class="ob-choice" data-ob-sex="female">Female</button>
+      </div>
+    </div>
+
+    <div class="ob-step" id="ob-weight">
+      <div class="ob-progress"><span class="ob-dot"></span><span class="ob-dot active"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span></div>
+      <h1 class="ob-question">What is your weight?</h1>
+      <div class="ob-input-row">
+        <input type="number" id="input-weight" class="ob-input" placeholder="70" min="20" max="400" inputmode="decimal">
+        <span class="ob-unit">kg</span>
+      </div>
+      <p class="ob-error hidden" id="err-weight">Please enter a weight between 20 and 400 kg</p>
+      <button class="ob-continue" id="btn-weight-next">Continue</button>
+    </div>
+
+    <div class="ob-step" id="ob-height">
+      <div class="ob-progress"><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot active"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span></div>
+      <h1 class="ob-question">What is your height?</h1>
+      <div class="ob-input-row">
+        <input type="number" id="input-height" class="ob-input" placeholder="170" min="50" max="280" inputmode="decimal">
+        <span class="ob-unit">cm</span>
+      </div>
+      <p class="ob-error hidden" id="err-height">Please enter a height between 50 and 280 cm</p>
+      <button class="ob-continue" id="btn-height-next">Continue</button>
+    </div>
+
+    <div class="ob-step" id="ob-age">
+      <div class="ob-progress"><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot active"></span><span class="ob-dot"></span><span class="ob-dot"></span></div>
+      <h1 class="ob-question">What is your age?</h1>
+      <div class="ob-input-row">
+        <input type="number" id="input-age" class="ob-input" placeholder="25" min="10" max="120" inputmode="decimal">
+        <span class="ob-unit">yrs</span>
+      </div>
+      <p class="ob-error hidden" id="err-age">Please enter an age between 10 and 120</p>
+      <button class="ob-continue" id="btn-age-next">Continue</button>
+    </div>
+
+    <div class="ob-step" id="ob-goal">
+      <div class="ob-progress"><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot active"></span><span class="ob-dot"></span></div>
+      <h1 class="ob-question">What is your goal?</h1>
+      <div class="ob-options ob-options--col">
+        <button class="ob-choice" data-ob-goal="0">Lose weight</button>
+        <button class="ob-choice" data-ob-goal="1">Maintain weight</button>
+        <button class="ob-choice" data-ob-goal="2">Gain weight</button>
+        <button class="ob-choice" data-ob-goal="3">Eat healthier</button>
+      </div>
+    </div>
+
+    <div class="ob-step" id="ob-activity">
+      <div class="ob-progress"><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot active"></span></div>
+      <h1 class="ob-question">How active are you?</h1>
+      <div class="ob-options ob-options--col">
+        <button class="ob-choice" data-ob-activity="0">Not very active</button>
+        <button class="ob-choice" data-ob-activity="1">Lightly active</button>
+        <button class="ob-choice" data-ob-activity="2">Moderately active</button>
+        <button class="ob-choice" data-ob-activity="3">Very active</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       STUDY SETUP  (after onboarding, once only)
+  ═══════════════════════════════════════════════ -->
+  <section id="study-setup" class="hidden">
+    <div class="setup-inner">
+      <h1 class="setup-title">Welcome to NutureByte</h1>
+      <p class="setup-subtitle">Enter your details before you begin.</p>
+
+      <div class="setup-field">
+        <label class="setup-label" for="setup-name">Your name</label>
+        <input type="text" id="setup-name" class="setup-input" placeholder="Enter your name" maxlength="40" autocomplete="off">
+      </div>
+
+      <button class="setup-confirm" id="btn-setup-confirm" disabled>Confirm</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       MAIN APP
+  ═══════════════════════════════════════════════ -->
+  <section id="app" class="hidden">
+
+    <!-- ── TRACKING TAB ───────────────────────────── -->
+    <div id="tab-tracking" class="tab-pane active">
+      <header class="track-header">
+        <button class="date-arrow" id="btn-prev-day" aria-label="Previous day">&#8592;</button>
+        <span class="date-label" id="date-label">Today</span>
+        <button class="date-arrow" id="btn-next-day" aria-label="Next day">&#8594;</button>
+      </header>
+      <p class="participant-badge hidden" id="participant-name-label"></p>
+
+      <div class="macro-panel">
+
+        <div class="macro-row">
+          <div class="macro-label-row">
+            <span class="macro-name">Energy</span>
+            <span class="macro-value" id="lbl-calories">0 / 2000 kcal</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill bar-fill--calories" id="bar-calories"></div></div>
+        </div>
+
+        <div class="macro-row">
+          <div class="macro-label-row">
+            <span class="macro-name">Protein</span>
+            <span class="macro-value" id="lbl-protein">0 / 150 g</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill bar-fill--protein" id="bar-protein"></div></div>
+        </div>
+
+        <div class="macro-row">
+          <div class="macro-label-row">
+            <span class="macro-name">Carbs</span>
+            <span class="macro-value" id="lbl-carbs">0 / 200 g</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill bar-fill--carbs" id="bar-carbs"></div></div>
+        </div>
+
+        <div class="macro-row">
+          <div class="macro-label-row">
+            <span class="macro-name">Fat</span>
+            <span class="macro-value" id="lbl-fat">0 / 65 g</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill bar-fill--fat" id="bar-fat"></div></div>
+        </div>
+
+      </div>
+
+      <div class="meals-list">
+        <div class="meal-card">
+          <div class="meal-card-header">
+            <span class="meal-card-name">Breakfast</span>
+            <button class="btn-add-food" data-meal="0" aria-label="Add breakfast">+</button>
+          </div>
+          <div class="meal-entries" id="entries-0"></div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-card-header">
+            <span class="meal-card-name">Lunch</span>
+            <button class="btn-add-food" data-meal="1" aria-label="Add lunch">+</button>
+          </div>
+          <div class="meal-entries" id="entries-1"></div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-card-header">
+            <span class="meal-card-name">Dinner</span>
+            <button class="btn-add-food" data-meal="2" aria-label="Add dinner">+</button>
+          </div>
+          <div class="meal-entries" id="entries-2"></div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-card-header">
+            <span class="meal-card-name">Snacks</span>
+            <button class="btn-add-food" data-meal="3" aria-label="Add snack">+</button>
+          </div>
+          <div class="meal-entries" id="entries-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROGRESS TAB ───────────────────────────── -->
+    <div id="tab-progress" class="tab-pane hidden">
+      <div id="progress-control">
+        <h2 class="ctrl-progress-title">Nutrition Summary</h2>
+        <div id="ctrl-table-wrap"></div>
+        <div class="ctrl-stats-grid" id="ctrl-stats-row"></div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS TAB ───────────────────────────── -->
+    <div id="tab-settings" class="tab-pane hidden">
+      <div class="settings-scroll">
+        <h2 class="settings-heading">Settings</h2>
+
+        <div class="settings-card">
+          <h3 class="settings-card-title">Daily goals</h3>
+          <div class="settings-field">
+            <label class="settings-label" for="s-cal">Calories (kcal)</label>
+            <input type="number" id="s-cal" class="settings-input" min="500">
+          </div>
+          <div class="settings-field">
+            <label class="settings-label" for="s-pro">Protein (g)</label>
+            <input type="number" id="s-pro" class="settings-input" min="0">
+          </div>
+          <div class="settings-field">
+            <label class="settings-label" for="s-carb">Carbs (g)</label>
+            <input type="number" id="s-carb" class="settings-input" min="0">
+          </div>
+          <div class="settings-field">
+            <label class="settings-label" for="s-fat">Fat (g)</label>
+            <input type="number" id="s-fat" class="settings-input" min="0">
+          </div>
+          <button class="btn-primary" id="btn-save-goals">Save goals</button>
+          <p class="settings-feedback hidden" id="goals-feedback"></p>
+        </div>
+
+        <div class="settings-card">
+          <h3 class="settings-card-title">Recalculate from profile</h3>
+          <div class="settings-field">
+            <label class="settings-label" for="s-sex">Biological sex</label>
+            <select id="s-sex" class="settings-input">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="settings-field">
+            <label class="settings-label" for="s-wt">Weight (kg)</label>
+            <input type="number" id="s-wt" class="settings-input" min="20" max="400">
+          </div>
+          <div class="settings-field">
+            <label class="settings-label" for="s-ht">Height (cm)</label>
+            <input type="number" id="s-ht" class="settings-input" min="50" max="280">
+          </div>
+          <div class="settings-field">
+            <label class="settings-label" for="s-age">Age</label>
+            <input type="number" id="s-age" class="settings-input" min="10" max="120">
+          </div>
+          <div class="settings-field">
+            <label class="settings-label" for="s-goal">Goal</label>
+            <select id="s-goal" class="settings-input">
+              <option value="0">Lose weight</option>
+              <option value="1">Maintain weight</option>
+              <option value="2">Gain weight</option>
+              <option value="3">Eat healthier</option>
+            </select>
+          </div>
+          <div class="settings-field">
+            <label class="settings-label" for="s-act">Activity level</label>
+            <select id="s-act" class="settings-input">
+              <option value="0">Not very active</option>
+              <option value="1">Lightly active</option>
+              <option value="2">Moderately active</option>
+              <option value="3">Very active</option>
+            </select>
+          </div>
+          <button class="btn-primary" id="btn-recalc">Recalculate goals</button>
+          <p class="settings-feedback hidden" id="recalc-feedback"></p>
+        </div>
+
+        <div class="settings-card">
+          <h3 class="settings-card-title">Study data</h3>
+          <div class="settings-field">
+            <span class="settings-label">Participant</span>
+            <span class="settings-locked-value" id="display-participant">—</span>
+          </div>
+          <div class="settings-field">
+            <span class="settings-label">Group</span>
+            <span class="settings-locked-value" id="display-group">—</span>
+          </div>
+          <button class="btn-study-export" id="btn-export-csv">&#8595; Download study data</button>
+          <p class="study-note">Exports a CSV covering 14 days from first app open.</p>
+        </div>
+
+        <div class="settings-card settings-card--danger">
+          <h3 class="settings-card-title">Data</h3>
+          <button class="btn-danger" id="btn-reset">Reset all data</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── BOTTOM NAV ─────────────────────────────── -->
+    <nav id="bottom-nav">
+      <button class="nav-btn active" data-tab="tracking">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="nav-label">Track</span>
+      </button>
+      <button class="nav-btn" data-tab="progress">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span class="nav-label">Summary</span>
+      </button>
+      <button class="nav-btn" data-tab="settings">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <span class="nav-label">Settings</span>
+      </button>
+    </nav>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       FOOD SEARCH  (full-screen overlay)
+  ═══════════════════════════════════════════════ -->
+  <section id="food-search" class="hidden">
+    <header class="search-header">
+      <button class="btn-back" id="btn-search-back" aria-label="Back">&#8592;</button>
+      <input type="text" id="search-input" class="search-bar" placeholder="Search food…" autocomplete="off">
+      <button class="btn-search-go" id="btn-search-go">Go</button>
+    </header>
+
+    <div id="search-body">
+      <p id="search-status" class="search-status"></p>
+      <div id="search-results"></div>
+      <div class="manual-trigger-wrap">
+        <button id="btn-manual-entry" class="btn-manual-trigger">Enter food manually</button>
+      </div>
+    </div>
+
+    <!-- Detail / confirm panel -->
+    <div id="detail-panel" class="detail-panel hidden">
+      <button class="btn-detail-back" id="btn-detail-back">&#8592; Results</button>
+      <h3 id="detail-name" class="detail-name"></h3>
+      <div id="detail-macros" class="detail-macros-grid"></div>
+      <div class="serving-row">
+        <label for="serving-input" class="serving-label">Serving size</label>
+        <div class="serving-input-wrap">
+          <input type="number" id="serving-input" class="serving-input" value="100" min="1" inputmode="decimal">
+          <span class="serving-unit">g</span>
+        </div>
+      </div>
+      <div id="detail-totals" class="detail-totals"></div>
+      <button class="btn-add" id="btn-add-food">Add to diary</button>
+    </div>
+
+    <!-- Manual food entry panel -->
+    <div id="manual-panel" class="detail-panel hidden">
+      <button class="btn-detail-back" id="btn-manual-back">&#8592; Back to search</button>
+      <h3 class="detail-name">Enter food manually</h3>
+      <div class="manual-form">
+        <div class="settings-field">
+          <label class="settings-label" for="manual-name">Food name</label>
+          <input type="text" id="manual-name" class="settings-input" placeholder="e.g. Chicken breast">
+        </div>
+        <div class="settings-field">
+          <label class="settings-label" for="manual-cal">Calories / 100g</label>
+          <input type="number" id="manual-cal" class="settings-input" min="0" placeholder="0">
+        </div>
+        <div class="settings-field">
+          <label class="settings-label" for="manual-pro">Protein / 100g</label>
+          <input type="number" id="manual-pro" class="settings-input" min="0" placeholder="0">
+        </div>
+        <div class="settings-field">
+          <label class="settings-label" for="manual-carb">Carbs / 100g</label>
+          <input type="number" id="manual-carb" class="settings-input" min="0" placeholder="0">
+        </div>
+        <div class="settings-field">
+          <label class="settings-label" for="manual-fat">Fat / 100g</label>
+          <input type="number" id="manual-fat" class="settings-input" min="0" placeholder="0">
+        </div>
+        <div class="settings-field">
+          <label class="settings-label" for="manual-serving">Serving size</label>
+          <div class="serving-input-wrap">
+            <input type="number" id="manual-serving" class="serving-input" value="100" min="1" inputmode="decimal">
+            <span class="serving-unit">g</span>
+          </div>
+        </div>
+      </div>
+      <p class="ob-error hidden" id="manual-error"></p>
+      <button class="btn-add" id="btn-manual-add">Add to diary</button>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       RESET CONFIRMATION MODAL
+  ═══════════════════════════════════════════════ -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal-box">
+      <p class="modal-text">This will permanently delete all your food logs, profile, and progress. This cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="btn-reset-cancel">Cancel</button>
+        <button class="btn-modal-danger" id="btn-reset-confirm">Reset everything</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+  </script>
+</body>
+</html>
